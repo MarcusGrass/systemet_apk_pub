@@ -1,0 +1,33 @@
+refresh_rate: 30 seconds
+
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "[{d} {h({l})}] [{T}] {t}::{L} - {m}{n}"
+
+  log_file:
+    kind: file
+    path: "log/app.log"
+    encoder:
+      pattern: "[{d} {h({l})}] [{T}] {t}::{L} - {m}{n}"
+
+# Set the default logging level to  appender to the root
+root:
+  level: info
+  appenders:
+    - stdout
+    - log_file
+
+loggers:
+  # Raise the maximum log level for events sent to the "app::backend::db" logger to "info"
+  app::backend::db:
+    level: info
+
+  # Route log events sent to the "app::requests" logger to the "requests" appender,
+  # and *not* the normal appenders installed at the root
+  app::requests:
+    level: info
+    appenders:
+      - requests
+    additive: false
